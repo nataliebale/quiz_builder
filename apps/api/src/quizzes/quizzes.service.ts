@@ -1,9 +1,8 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { Prisma, Quiz } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateQuizDto } from './dto/create-quiz.dto';
 import { UpdateQuizDto } from './dto/update-quiz.dto';
-
+import { Prisma } from '@prisma/client';
 type QuizBlocksPayload = { blocks: Prisma.InputJsonValue[] };
 
 function normalizeTitle(input: string): string {
@@ -39,47 +38,40 @@ export class QuizzesService {
     });
   }
 
-  async get(id: string): Promise<Quiz> {
+  async get(id: string) {
     const quiz = await this.prisma.quiz.findUnique({ where: { id } });
     if (!quiz) throw new NotFoundException('Quiz not found');
     return quiz;
   }
 
-  private async assertExists(id: string) {
-    const exists = await this.prisma.quiz.findUnique({
-      where: { id },
-      select: { id: true },
-    });
-    if (!exists) throw new NotFoundException('Quiz not found');
-  }
-
   async create(dto: CreateQuizDto) {
+    const title = dto.title?.trim();
+    if (!title) throw new BadRequestException('Title is required');
+
     return this.prisma.quiz.create({
       data: {
-        title: normalizeTitle(dto.title),
-        blocks: normalizeBlocks(dto.blocks) as Prisma.InputJsonValue,
+        title,
+        blocks: (dto.blocks ?? { blocks: [] }) as any,
         published: dto.published ?? false,
       },
     });
   }
 
   async update(id: string, dto: UpdateQuizDto) {
-    await this.assertExists(id);
-
-    const data: Prisma.QuizUpdateInput = {};
-
-    if (dto.title !== undefined) data.title = normalizeTitle(dto.title);
-    if (dto.blocks !== undefined) data.blocks = normalizeBlocks(dto.blocks) as Prisma.InputJsonValue;
-    if (dto.published !== undefined) data.published = dto.published;
+    await this.get(id);
 
     return this.prisma.quiz.update({
       where: { id },
-      data,
+      data: {
+        ...(dto.title !== undefined ? { title: dto.title.trim() } : {}),
+        ...(dto.blocks !== undefined ? { blocks: dto.blocks as any } : {}),
+        ...(dto.published !== undefined ? { published: dto.published } : {}),
+      },
     });
   }
 
   async publish(id: string) {
-    await this.assertExists(id);
+    await this.get(id);
 
     return this.prisma.quiz.update({
       where: { id },
