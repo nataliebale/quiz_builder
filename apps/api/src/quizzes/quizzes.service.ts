@@ -63,9 +63,9 @@ export class QuizzesService {
     return this.prisma.quiz.update({
       where: { id },
       data: {
-        ...(dto.title !== undefined ? { title: dto.title.trim() } : {}),
-        ...(dto.blocks !== undefined ? { blocks: dto.blocks as any } : {}),
-        ...(dto.published !== undefined ? { published: dto.published } : {}),
+        ...(dto.title ? { title: dto.title.trim() } : {}),
+        ...(dto.blocks ? { blocks: dto.blocks as any } : {}),
+        ...(dto.published ? { published: dto.published } : {}),
       },
     });
   }
