@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { DndContext, DragEndEvent, DragStartEvent, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { SortableContext, arrayMove, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import { toast } from 'sonner';
 import { QuizzesApi } from '@/lib/api';
 import { PALETTE } from '@/lib/palette';
 import { QuizBlock, QuizContent } from '@/lib/types';
@@ -19,6 +20,7 @@ export default function QuizEditor({ initialQuiz }: QuizEditorProps) {
 
   const [quizId] = useState<string | null>(initialQuiz?.id ?? null);
   const [title, setTitle] = useState(initialQuiz?.title ?? 'Untitled quiz');
+  const [published, setPublished] = useState(initialQuiz?.published ?? false);
   const [blocks, setBlocks] = useState<QuizBlock[]>(initialQuiz?.blocks?.blocks ?? []);
   const [selectedId, setSelectedId] = useState<string | null>(initialQuiz?.blocks?.blocks?.[0]?.id ?? null);
   const [error, setError] = useState<string | null>(null);
@@ -45,19 +47,40 @@ export default function QuizEditor({ initialQuiz }: QuizEditorProps) {
     setSaving(true);
     setError(null);
 
-    const payload = { title, blocks: { blocks } as QuizContent };
+    const trimmedTitle = title.trim();
+    if (!trimmedTitle) {
+      toast.error('Title is required');
+      setSaving(false);
+      return;
+    }
+
+    const payload = { title: trimmedTitle, blocks: { blocks } as QuizContent };
 
     try {
       if (!quizId) {
         const created = await QuizzesApi.create(payload);
-        if (publishAfter) await QuizzesApi.publish(created.id);
+        toast.success('Quiz created');
+
+        if (publishAfter) {
+          const updated = await QuizzesApi.publish(created.id);
+          setPublished(updated.published);
+          toast.success(updated.published ? 'Quiz published' : 'Quiz unpublished');
+        }
       } else {
         await QuizzesApi.update(quizId, payload);
-        if (publishAfter) await QuizzesApi.publish(quizId);
+        toast.success('Quiz saved');
+
+        if (publishAfter) {
+          const updated = await QuizzesApi.publish(quizId);
+          setPublished(updated.published);
+          toast.success(updated.published ? 'Quiz published' : 'Quiz unpublished');
+        }
       }
       router.push('/');
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Failed to save');
+      const message = e instanceof Error ? e.message : 'Failed to save';
+      setError(message);
+      toast.error(message);
     } finally {
       setSaving(false);
     }
@@ -109,8 +132,9 @@ export default function QuizEditor({ initialQuiz }: QuizEditorProps) {
         title={title}
         onTitleChange={setTitle}
         saving={saving}
+        published={published}
         onSave={() => save(false)}
-        onPublish={() => save(true)}
+        onPublishToggle={() => save(true)}
         rightSlot={
           <Link
             href="/"

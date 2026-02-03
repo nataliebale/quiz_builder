@@ -1,12 +1,38 @@
 import Link from 'next/link';
-import {QuizzesApi} from '@/lib/api';
+import { QuizzesApi } from '@/lib/api';
 import QuizRenderer from '@/components/quiz-renderer/QuizRenderer';
 
-export default async function QuizRenderPage({params}: {
+export default async function QuizRenderPage({
+                                               params,
+                                             }: {
   params: Promise<{ id: string }>;
 }) {
-  const {id} = await params;
-  const quiz = await QuizzesApi.get(id);
+  const { id } = await params;
+
+  let quiz: Awaited<ReturnType<typeof QuizzesApi.get>> | null = null;
+
+  try {
+    quiz = await QuizzesApi.get(id);
+  } catch {
+    return (
+      <main className="p-6 max-w-5xl mx-auto bg-[var(--ui-bg)] text-[var(--ui-text)]">
+        <div className="p-4 border border-[var(--ui-border)] rounded bg-[var(--ui-surface)]">
+          <div className="text-lg font-semibold mb-1">Quiz not found</div>
+          <div className="text-sm text-[var(--ui-muted)]">
+            This quiz doesn’t exist or is not available.
+          </div>
+          <div className="mt-4">
+            <Link
+              href="/"
+              className="px-4 py-2 rounded border border-[var(--ui-border)] bg-[var(--ui-surface)] hover:bg-[var(--ui-surface-2)] transition"
+            >
+              Back to list
+            </Link>
+          </div>
+        </div>
+      </main>
+    );
+  }
 
   if (!quiz.published) {
     return (
@@ -48,7 +74,7 @@ export default async function QuizRenderPage({params}: {
         </Link>
       </div>
 
-      <QuizRenderer blocks={quiz.blocks?.blocks ?? []}/>
+      <QuizRenderer blocks={quiz.blocks?.blocks ?? []} />
     </main>
   );
 }

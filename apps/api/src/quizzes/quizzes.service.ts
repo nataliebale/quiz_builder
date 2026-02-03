@@ -71,11 +71,11 @@ export class QuizzesService {
   }
 
   async publish(id: string) {
-    await this.get(id);
+    const quiz = await this.get(id);
 
     return this.prisma.quiz.update({
       where: { id },
-      data: { published: true },
+      data: { published: !quiz.published },
     });
   }
 }

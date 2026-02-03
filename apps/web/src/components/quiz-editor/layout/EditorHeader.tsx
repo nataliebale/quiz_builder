@@ -6,12 +6,21 @@ type Props = {
   title: string;
   onTitleChange: (v: string) => void;
   saving: boolean;
+  published: boolean;
   onSave: () => void;
-  onPublish: () => void;
+  onPublishToggle: () => void;
   rightSlot?: React.ReactNode;
 };
 
-export default function EditorHeader({ title, onTitleChange, saving, onSave, onPublish, rightSlot }: Props) {
+export default function EditorHeader({
+                                       title,
+                                       onTitleChange,
+                                       saving,
+                                       published,
+                                       onSave,
+                                       onPublishToggle,
+                                       rightSlot,
+                                     }: Props) {
   return (
     <div className="p-4 flex items-center gap-3 border-b border-[var(--ui-border)] bg-[var(--ui-bg)]">
       <input
@@ -32,10 +41,11 @@ export default function EditorHeader({ title, onTitleChange, saving, onSave, onP
 
       <button
         className="px-4 py-2 rounded text-white bg-[var(--ui-primary)] hover:bg-[var(--ui-primary-2)] transition"
-        onClick={onPublish}
+        onClick={onPublishToggle}
         disabled={saving}
+        title={published ? 'Unpublish quiz' : 'Publish quiz'}
       >
-        Publish
+        {published ? 'Unpublish' : 'Publish'}
       </button>
     </div>
   );
