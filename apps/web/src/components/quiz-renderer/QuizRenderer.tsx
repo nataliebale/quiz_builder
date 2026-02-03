@@ -1,4 +1,4 @@
-import { QuizBlock } from '@/lib/types';
+import { QuizBlock } from '../../../../../libs/types';
 
 type Props = {
   blocks: QuizBlock[];

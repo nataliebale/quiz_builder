@@ -1,14 +1,12 @@
 'use client';
 
 import React from 'react';
-import {QuizBlock} from '@/lib/types';
+import {QuizBlock} from '../../../../../../libs/types';
+import {BlockEditorProps} from "@/components/quiz-editor/properties/QuestionPropsEditor";
 
 type HeadingBlock = Extract<QuizBlock, { type: 'HEADING' }>;
 
-export default function HeadingPropsEditor({block, onChange}: {
-  block: HeadingBlock;
-  onChange: (next: QuizBlock) => void;
-}) {
+export default function HeadingPropsEditor({ block, onChange }: BlockEditorProps<HeadingBlock>) {
   const setProps = (nextProps: HeadingBlock['props']) => onChange({...block, props: nextProps});
 
   return (

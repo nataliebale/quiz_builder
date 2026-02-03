@@ -1,4 +1,4 @@
-import {QuizBlock} from './types';
+import {QuizBlock} from '../../../../libs/types';
 import {uid} from './id';
 
 export type PaletteItem = {

@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { QuizListItem } from '@/lib/types';
+import { QuizListItem } from '../../../../../libs/types';
 
 type Props = {
   quizzes: QuizListItem[];

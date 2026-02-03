@@ -3,13 +3,17 @@
 import React from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { QuizBlock } from '@/lib/types';
+import { QuizBlock } from '../../../../../libs/types';
 
 type Props = {
   block: QuizBlock;
   selected: boolean;
   onSelect: () => void;
 };
+
+function assertNever(value: never): never {
+  throw new Error(`Unhandled block type: ${JSON.stringify(value)}`);
+}
 
 function BlockPreview({ block }: { block: QuizBlock }) {
   switch (block.type) {
@@ -26,7 +30,7 @@ function BlockPreview({ block }: { block: QuizBlock }) {
     case 'FOOTER':
       return <div className="text-xs text-[var(--ui-muted)]">{block.props.text}</div>;
     default:
-      return null;
+      return assertNever(block);
   }
 }
 

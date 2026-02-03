@@ -1,4 +1,4 @@
-import { QuizEntity } from '@/lib/types';
+import { QuizEntity } from '../../../../../libs/types';
 
 export type EditorMode = 'create' | 'edit';
 

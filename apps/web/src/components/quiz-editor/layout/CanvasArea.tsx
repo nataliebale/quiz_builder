@@ -1,20 +1,19 @@
 'use client';
 
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import CanvasDroppable from '../CanvasDroppable';
 import SortableBlock from '../SortableBlock';
-import { QuizBlock } from '@/lib/types';
+import { QuizBlock } from '../../../../../../libs/types';
 
-type Props = {
+type Props = PropsWithChildren<{
   blocks: QuizBlock[];
   selectedId: string | null;
   onSelect: (id: string | null) => void;
   onDeleteSelected: () => void;
-  children?: React.ReactNode;
-};
+}>;
 
-export default function CanvasArea({ blocks, selectedId, onSelect, onDeleteSelected }: Props) {
+export default function CanvasArea({ blocks, selectedId, onSelect, onDeleteSelected, children }: Props) {
   return (
     <>
       <div className="text-sm font-semibold mb-3 text-[var(--ui-text)]">Canvas</div>
@@ -37,6 +36,8 @@ export default function CanvasArea({ blocks, selectedId, onSelect, onDeleteSelec
           </div>
         </SortableContext>
       </CanvasDroppable>
+
+      {children}
 
       <div className="mt-3 flex items-center gap-2">
         <button

@@ -8,14 +8,14 @@ import { SortableContext, arrayMove, verticalListSortingStrategy } from '@dnd-ki
 import { toast } from 'sonner';
 import { QuizzesApi } from '@/lib/api';
 import { PALETTE } from '@/lib/palette';
-import { QuizBlock, QuizContent } from '@/lib/types';
+import { QuizBlock, QuizContent } from '../../../../../libs/types';
 import EditorHeader from './layout/EditorHeader';
 import PaletteSidebar from './layout/PaletteSidebar';
 import CanvasArea from './layout/CanvasArea';
 import PropertiesSidebar from './layout/PropertiesSidebar';
 import { QuizEditorProps } from './types';
 
-export default function QuizEditor({ initialQuiz }: QuizEditorProps) {
+export default function Index({ initialQuiz }: QuizEditorProps) {
   const router = useRouter();
 
   const [quizId] = useState<string | null>(initialQuiz?.id ?? null);

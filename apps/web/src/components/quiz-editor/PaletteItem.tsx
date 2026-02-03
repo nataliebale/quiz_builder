@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useDraggable } from '@dnd-kit/core';
-import { QuizBlock } from '@/lib/types';
+import { QuizBlock } from '../../../../../libs/types';
 
 export default function PaletteItem({label, type}: {
   label: string;

@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import {QuizBlock} from '@/lib/types';
+import {QuizBlock} from '../../../../../../libs/types';
 
 type FooterBlock = Extract<QuizBlock, { type: 'FOOTER' }>;
 
