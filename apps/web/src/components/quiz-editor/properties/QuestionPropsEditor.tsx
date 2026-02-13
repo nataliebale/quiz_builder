@@ -86,8 +86,17 @@ export default function QuestionPropsEditor({
               />
               <button
                 type="button"
-                className="px-2 py-2 border border-[var(--ui-border)] rounded bg-[var(--ui-surface)] hover:bg-[var(--ui-surface-2)]"
                 onClick={() => handleOptionDelete(idx)}
+                disabled={block.props.options.length <= 1}
+                className="
+                  px-2 py-2 rounded transition
+                  bg-[var(--ui-danger)] text-[var(--ui-surface)]
+                  hover:bg-[var(--ui-danger-2)] hover:cursor-pointer
+                  disabled:bg-[var(--ui-border)]
+                  disabled:text-[var(--ui-muted)]
+                  disabled:cursor-not-allowed
+                  disabled:hover:bg-[var(--ui-border)]
+                "
               >
                 ✕
               </button>
@@ -96,7 +105,7 @@ export default function QuestionPropsEditor({
 
           <button
             type="button"
-            className="px-3 py-2 border border-[var(--ui-border)] rounded bg-[var(--ui-surface)] hover:bg-[var(--ui-surface-2)]"
+            className="px-3 py-2 border border-[var(--ui-border)] rounded bg-[var(--ui-surface)] hover:bg-[var(--ui-surface-2)] hover:cursor-pointer"
             onClick={handleOptionAdd}
           >
             + Add option

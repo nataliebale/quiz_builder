@@ -1,8 +1,13 @@
 'use client';
 
 import type { QuizEditorProps } from './types';
-import Index from "@/components/quiz-editor/index";
+import dynamic from "next/dynamic";
+
+const IndexClient = dynamic(
+  () => import('@/components/quiz-editor/index'),
+  { ssr: false }
+);
 
 export default function QuizEditorClient(props: QuizEditorProps) {
-  return <Index {...props} />;
+  return <IndexClient {...props} />;
 }

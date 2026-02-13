@@ -6,7 +6,7 @@ export default function ToasterProvider() {
   return (
     <Toaster
       richColors
-      position="top-right"
+      position="bottom-center"
       toastOptions={{
         duration: 3500,
       }}

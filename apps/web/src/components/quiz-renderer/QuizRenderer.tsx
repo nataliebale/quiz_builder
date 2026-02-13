@@ -37,7 +37,7 @@ function ButtonBlock({ block }: { block: Extract<QuizBlock, { type: 'BUTTON' }> 
   return (
     <button
       type="button"
-      className="px-4 py-2 rounded text-white bg-[var(--ui-primary)] hover:bg-[var(--ui-primary-2)] transition"
+      className="px-4 py-2 rounded text-white bg-[var(--ui-primary)] hover:bg-[var(--ui-primary-2)] transition hover:cursor-pointer"
     >
       {block.props.variant === 'submit' ? 'Submit' : 'Next'}
     </button>

@@ -32,7 +32,7 @@ export default function EditorHeader({
       {rightSlot}
 
       <button
-        className="px-4 py-2 rounded border border-[var(--ui-border)] bg-[var(--ui-surface)] hover:bg-[var(--ui-surface-2)] transition"
+        className="px-4 py-2 rounded border border-[var(--ui-border)] bg-[var(--ui-surface)] hover:bg-[var(--ui-surface-2)] transition hover:cursor-pointer"
         onClick={onSave}
         disabled={saving}
       >
@@ -40,7 +40,7 @@ export default function EditorHeader({
       </button>
 
       <button
-        className="px-4 py-2 rounded text-white bg-[var(--ui-primary)] hover:bg-[var(--ui-primary-2)] transition"
+        className="px-4 py-2 rounded text-white bg-[var(--ui-primary)] hover:bg-[var(--ui-primary-2)] transition hover:cursor-pointer"
         onClick={onPublishToggle}
         disabled={saving}
         title={published ? 'Unpublish quiz' : 'Publish quiz'}

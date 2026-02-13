@@ -2,30 +2,6 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateQuizDto } from './dto/create-quiz.dto';
 import { UpdateQuizDto } from './dto/update-quiz.dto';
-import { Prisma } from '@prisma/client';
-type QuizBlocksPayload = { blocks: Prisma.InputJsonValue[] };
-
-function normalizeTitle(input: string): string {
-  const title = input.trim();
-  if (!title) throw new BadRequestException('Title is required');
-  return title;
-}
-
-function isRecord(v: unknown): v is Record<string, unknown> {
-  return typeof v === 'object' && v !== null;
-}
-
-function isJsonArray(v: unknown): v is Prisma.InputJsonValue[] {
-  return Array.isArray(v);
-}
-
-function normalizeBlocks(input: unknown): QuizBlocksPayload {
-  if (isRecord(input) && 'blocks' in input) {
-    const blocks = input.blocks;
-    if (isJsonArray(blocks)) return { blocks };
-  }
-  return { blocks: [] };
-}
 
 @Injectable()
 export class QuizzesService {
